@@ -335,7 +335,6 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
     <dl class="sum" id="sum"></dl>
     <p class="demo hide" id="demo">Modo de teste: esta resposta não foi enviada.</p>
     <div class="mact">
-      <button class="btn main" type="button" id="share">Partilhar com a família</button>
       <button class="mlink" type="button" id="backTop">Voltar ao início</button>
     </div>
   </div>
@@ -674,7 +673,7 @@ function fillDone(d,demo){
   rows.filter(r=>r[1]).forEach(([k,v])=>{const dt=document.createElement('dt');dt.textContent=k;const dd=document.createElement('dd');dd.textContent=v;sum.append(dt,dd)});
   $('#demo').classList.toggle('hide',!demo);
 }
-function openModal(){lastFocus=document.activeElement;modal.classList.remove('hide');document.body.style.overflow='hidden';$('#share').focus()}
+function openModal(){lastFocus=document.activeElement;modal.classList.remove('hide');document.body.style.overflow='hidden';$('#backTop').focus()}
 function closeModal(){modal.classList.add('hide');document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 function showSent(d){f.classList.add('hide');$('#sent').classList.remove('hide');$('#sentn').textContent=d&&d.nome?', '+d.nome.split(' ')[0]:''}
 function showDone(d,demo){
@@ -687,12 +686,7 @@ modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.classList.contains('hide'))closeModal()});
 $('#seeMine').addEventListener('click',()=>{const d=mine();if(d){fillDone(d,false);openModal()}});
 $('#backTop').addEventListener('click',()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$('#replay').click(),500)});
-$('#share').addEventListener('click',async()=>{
-  const url=location.href.split('#')[0],b=$('#share'),txt='Menino ou menina? Dá o teu palpite sobre o bebé da Colete e do Diogo!';
-  try{if(navigator.share){await navigator.share({title:'Palpites do bebé',text:txt,url});return}
-    await navigator.clipboard.writeText(url);b.textContent='Link copiado!';setTimeout(()=>b.textContent='Partilhar com a família',2200)}
-  catch(e){if(e&&e.name==='AbortError')return;b.textContent=url}
-});
+
 {const d=mine();if(d)showSent(d)}
 }
 </script>
