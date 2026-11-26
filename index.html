@@ -166,26 +166,15 @@ input.tr::-webkit-slider-thumb{margin-top:-11px}
 .sum dt{color:var(--soft);font-weight:700}
 .sum dd{margin:0;font-weight:800}
 .demo{font-size:14px;color:var(--soft)}
-.resbtn{position:absolute;top:14px;right:max(4vw,14px);z-index:4;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:0 16px;min-height:40px;display:inline-flex;align-items:center;font-weight:700;font-size:14px;color:var(--ink);text-decoration:none;box-shadow:3px 3px 0 var(--yel)}
-.resbtn:hover{transform:translate(-1px,-1px)}
-.resbtn:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
-.res{margin-top:22px;background:var(--card);border:2px solid var(--ink);border-radius:22px;padding:26px 22px;scroll-margin-top:20px}
-.res h2{font:400 clamp(36px,6vw,48px)/1 "Caveat Brush",cursive;margin:0 0 4px}
-.rcount{margin:0 0 18px;color:var(--soft);font-weight:700}
-.rcount b{color:var(--ink);font-size:20px}
-.sp{margin:0 0 18px}
-.spt{margin:0 0 2px;font:700 22px/1.1 Caveat,cursive;color:var(--soft)}
-.spl{display:flex;justify-content:space-between;gap:12px;font-weight:700;font-size:16px;margin-bottom:6px}
-.spl b{font:400 24px/1 "Caveat Brush",cursive}
-.bar{height:16px;border:2px solid var(--ink);border-radius:999px;background:var(--yel2);overflow:hidden}
-.bar i{display:block;height:100%;background:#E5B57C;border-right:2px solid var(--ink);transition:width .8s cubic-bezier(.2,.8,.2,1)}
-.mine{font-size:13px;color:var(--soft);margin-top:4px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
-.st{border:2px dashed #D9C3A6;border-radius:14px;padding:12px 14px}
-.st small{display:block;color:var(--soft);font-weight:700;font-size:13px}
-.st b{font:400 30px/1.1 "Caveat Brush",cursive;white-space:nowrap}
-.st span{display:block;font-size:13px;color:var(--soft)}
-.rnote{font-size:14px;color:var(--soft);margin:16px 0 0}
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(59,42,34,.5)}
+.modal .done{position:relative;width:min(100%,460px);max-height:calc(100svh - 32px);overflow:auto;animation:mpop .5s cubic-bezier(.3,1.5,.5,1)}
+@keyframes mpop{from{opacity:0;transform:translateY(24px) scale(.92)}to{opacity:1;transform:none}}
+.mclose{position:absolute;top:8px;right:10px;width:44px;height:44px;border:0;background:none;font-size:30px;line-height:1;cursor:pointer;color:var(--soft)}
+.mclose:focus-visible,.mlink:focus-visible{outline:3px solid var(--coral);outline-offset:2px;border-radius:8px}
+.mact{display:grid;justify-items:center;gap:6px;margin-top:4px}
+.mlink{border:0;background:none;font:700 15px "DM Sans",sans-serif;color:var(--soft);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px;padding:0 10px}
+.sent{background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:22px 20px;text-align:center}
+.sentt{margin:0 0 12px;font:400 30px/1.1 "Caveat Brush",cursive}
 footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
 @media(max-width:600px){.btn{padding:0 16px}.tip{font-size:20px}.q{padding:18px 16px}.scale{padding:0 58px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.flap,.glide{animation:none}.bob{animation:none}}
@@ -208,7 +197,6 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
     <div class="ask" id="ask" style="left:820px;top:1030px"><b>E agora…</b><span>menino ou menina?</span></div>
     <div class="fx" id="fx"></div>
   </div>
-  <a class="resbtn hide" id="resbtn" href="#res">Resultados</a>
   <div class="bottom">
     <p class="cap off" id="cap" aria-live="polite"></p>
     <p class="tip hide" id="tip">Toca nas caras para receber beijinhos</p>
@@ -329,24 +317,29 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
       </div>
     </form>
 
-    <div class="done hide" id="done" aria-live="polite">
-      <div class="dbaby" id="dbaby"></div>
-      <h2 id="thanks">Obrigado!</h2>
-      <p>O teu palpite ficou guardado. No domingo descobrimos a primeira resposta.</p>
-      <dl class="sum" id="sum"></dl>
-      <p class="demo hide" id="demo">Modo de teste: esta resposta não foi enviada.</p>
-      <button class="btn" type="button" id="again">Enviar outro palpite</button>
+    <div class="sent hide" id="sent">
+      <p class="sentt">Já enviaste o teu palpite<span id="sentn"></span>. Obrigado!</p>
+      <button class="btn" type="button" id="seeMine">Ver o meu palpite</button>
     </div>
 
-    <section class="res hide" id="res" aria-live="polite">
-      <h2>Os palpites da família</h2>
-      <p class="rcount" id="rcount"></p>
-      <div id="rbody"></div>
-      <p class="rnote">Os resultados atualizam de poucos em poucos minutos.</p>
-    </section>
   </div>
 </section>
 <footer>Com carinho, Colete e Diogo</footer>
+
+<div class="modal hide" id="modal" role="dialog" aria-modal="true" aria-labelledby="thanks">
+  <div class="done" id="done">
+    <button class="mclose" type="button" id="mclose" aria-label="Fechar">×</button>
+    <div class="dbaby" id="dbaby"></div>
+    <h2 id="thanks">Obrigado!</h2>
+    <p>O teu palpite ficou guardado. No domingo descobrimos a primeira resposta.</p>
+    <dl class="sum" id="sum"></dl>
+    <p class="demo hide" id="demo">Modo de teste: esta resposta não foi enviada.</p>
+    <div class="mact">
+      <button class="btn main" type="button" id="share">Partilhar com a família</button>
+      <button class="mlink" type="button" id="backTop">Voltar ao início</button>
+    </div>
+  </div>
+</div>
 
 <script>
 {
@@ -361,8 +354,6 @@ const PHOTOS={nelson:DIOGO,lynda:DIOGO,fatima:FATIMA,rui:RUI,colete:COLETE,diogo
 /* GOOGLE FORM: formUrl termina em /formResponse; entries = ids "entry.123..." de cada pergunta. Vazio = modo de teste. */
 const CONFIG={formUrl:'https://docs.google.com/forms/d/e/1FAIpQLSdhjqdTRR8avZ3DSJUwLgwNzkLDI06rbTFrRAXgvh4lhRxUAw/formResponse',
   entries:{nome:'entry.1427517668',sexo:'entry.601037301',data:'entry.987165231',hora:'entry.1257848992',peso:'entry.1663502895',cabelo:'entry.861649370',olhos:'entry.1351059761',chora:'entry.1410777417',nomes:'entry.1762128401',mensagem:'entry.268577654'}};
-/* RESULTADOS: folha "Resumo" publicada em CSV (só totais, sem nomes nem mensagens) */
-const RES_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vSEqfY85tN8jAxVNl3TusAxb1cb1ZSJJlnO-EEGXnTOH1GaWlc37ioJq5m5yiRSPYXeW9cIxcxp5TmD/pub?gid=1584446216&single=true&output=csv';
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -672,58 +663,37 @@ f.addEventListener('submit',async e=>{
   }catch(err){$('#sendmsg').textContent='Não foi possível enviar. Verifica a ligação e tenta outra vez.'}
   btn.disabled=false;btn.textContent='Enviar o meu palpite';
 });
-/* ---- resultados ---- */
+/* ---- obrigado (modal) e "já enviaste" ---- */
 const store=d=>{try{localStorage.setItem('palpite-bebe',JSON.stringify(d))}catch(e){}};
 const mine=()=>{try{return JSON.parse(localStorage.getItem('palpite-bebe')||'null')}catch(e){return null}};
-const pct=(a,b)=>a+b?Math.round(a/(a+b)*100):50;
-function split(t,l,rr,a,b,my){
-  const p=pct(a,b),none=!(a+b);
-  return `<div class="sp">${t?`<p class="spt">${esc(t)}</p>`:''}<div class="spl"><span>${esc(l)} <b>${none?'–':p+'%'}</b></span><span><b>${none?'–':(100-p)+'%'}</b> ${esc(rr)}</span></div><div class="bar"><i style="width:${p}%"></i></div>${my?`<p class="mine">O teu palpite: ${esc(my)}</p>`:''}</div>`;
-}
-function renderRes(m,me){
-  const n=+m.total||0,rc=$('#rcount'),rb=$('#rbody');
-  if(!n){rc.textContent=me?'Ainda não há palpites contados. O teu já foi enviado: volta daqui a uns minutos para veres os da família.':'Ainda não há palpites.';
-    rb.innerHTML=me?`<div class="stats"><div class="st"><small>O teu palpite</small><b>${esc(me.sexo)}</b><span>${esc(kg(+me.peso))}, ${esc(me.data)}</span></div></div>`:'';return}
-  rc.innerHTML=`<b>${n}</b> ${n===1?'palpite':'palpites'} até agora`;
-  const c=k=>+m[k]||0,cab=me&&(me.cabelo==='Sim'?'Com cabelo':'Carequinha');
-  let h=split('','Menino','Menina',c('menino'),c('menina'),me&&me.sexo)
-   +split('Cabelo','Com cabelo','Carequinha',c('cabelo_sim'),c('cabelo_nao'),cab)
-   +split('Olhos','Castanhos','Azuis',c('olhos_castanhos'),c('olhos_azuis'),me&&me.olhos)
-   +split('Quem chora primeiro','O pai','A mãe',c('chora_pai'),c('chora_mae'),me&&me.chora);
-  const st=[];
-  if(m.peso_medio)st.push(['Peso médio',kg(+m.peso_medio),m.peso_min?`entre ${kg(+m.peso_min)} e ${kg(+m.peso_max)}`:'']);
-  if(m.data_top||m.data_media)st.push([m.data_top?'Dia mais escolhido':'Dia médio',m.data_top||m.data_media,m.data_top&&m.data_media?`média: ${m.data_media}`:'']);
-  if(m.hora_media)st.push(['Hora média',m.hora_media,'']);
-  h+=`<div class="stats">${st.map(([a,b,cc])=>`<div class="st"><small>${esc(a)}</small><b>${esc(b)}</b>${cc?`<span>${esc(cc)}</span>`:''}</div>`).join('')}</div>`;
-  rb.innerHTML=h;
-}
-async function loadRes(){
-  const sec=$('#res');sec.classList.remove('hide');$('#rcount').textContent='A contar os palpites…';
-  try{
-    const t=await(await fetch(RES_URL+'&t='+Date.now(),{cache:'no-store'})).text(),m={};
-    t.split(/\r?\n/).forEach(l=>{const i=l.indexOf(',');if(i>0)m[l.slice(0,i).trim()]=l.slice(i+1).replace(/^"|"$/g,'').trim()});
-    if(!('total' in m))throw 0;
-    renderRes(m,mine());
-  }catch(e){$('#rcount').textContent='Não foi possível carregar os resultados agora. Tenta daqui a pouco.';$('#rbody').textContent=''}
-}
-$('#resbtn').addEventListener('click',e=>{e.preventDefault();loadRes();$('#res').scrollIntoView({behavior:'smooth'})});
-if(mine()){$('#resbtn').classList.remove('hide');loadRes()}
-
-function showDone(d,demo){
+const modal=$('#modal');let lastFocus=null;
+function fillDone(d,demo){
   $('#thanks').textContent='Obrigado, '+d.nome.split(' ')[0]+'!';
-  const rows=[['Sexo',d.sexo],['Nasce a',nice(picked)],['Hora',d.hora],['Peso',kg(+d.peso)],['Cabelo',d.cabelo==='Sim'?'Com cabelo':'Carequinha'],['Olhos',d.olhos],['Chora primeiro',d.chora],['Nomes',d.nomes]];
+  const rows=[['Sexo',d.sexo],['Nasce a',d.nasce],['Hora',d.hora],['Peso',kg(+d.peso)],['Cabelo',d.cabelo==='Sim'?'Com cabelo':'Carequinha'],['Olhos',d.olhos],['Chora primeiro',d.chora],['Nomes',d.nomes]];
   const sum=$('#sum');sum.textContent='';
   rows.filter(r=>r[1]).forEach(([k,v])=>{const dt=document.createElement('dt');dt.textContent=k;const dd=document.createElement('dd');dd.textContent=v;sum.append(dt,dd)});
-  $('#demo').classList.toggle('hide',!demo);f.classList.add('hide');$('#done').classList.remove('hide');
-  if(!demo){store(d);$('#resbtn').classList.remove('hide')}
-  setTimeout(loadRes,demo?0:1500);
-  $('#palpite').scrollIntoView({behavior:'smooth'});
+  $('#demo').classList.toggle('hide',!demo);
 }
-$('#again').addEventListener('click',()=>{
-  f.reset();picked='';$('#picked').textContent='';cal.querySelectorAll('.day').forEach(x=>x.setAttribute('aria-pressed','false'));
-  peso.value=3300;showW();resetH();$('#done').classList.add('hide');f.classList.remove('hide');
-  $('#q-nome').scrollIntoView({behavior:'smooth',block:'center'});
+function openModal(){lastFocus=document.activeElement;modal.classList.remove('hide');document.body.style.overflow='hidden';$('#share').focus()}
+function closeModal(){modal.classList.add('hide');document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function showSent(d){f.classList.add('hide');$('#sent').classList.remove('hide');$('#sentn').textContent=d&&d.nome?', '+d.nome.split(' ')[0]:''}
+function showDone(d,demo){
+  d.nasce=nice(picked);fillDone(d,demo);
+  if(!demo){store(d);showSent(d)}
+  openModal();
+}
+$('#mclose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.classList.contains('hide'))closeModal()});
+$('#seeMine').addEventListener('click',()=>{const d=mine();if(d){fillDone(d,false);openModal()}});
+$('#backTop').addEventListener('click',()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$('#replay').click(),500)});
+$('#share').addEventListener('click',async()=>{
+  const url=location.href.split('#')[0],b=$('#share'),txt='Menino ou menina? Dá o teu palpite sobre o bebé da Colete e do Diogo!';
+  try{if(navigator.share){await navigator.share({title:'Palpites do bebé',text:txt,url});return}
+    await navigator.clipboard.writeText(url);b.textContent='Link copiado!';setTimeout(()=>b.textContent='Partilhar com a família',2200)}
+  catch(e){if(e&&e.name==='AbortError')return;b.textContent=url}
 });
+{const d=mine();if(d)showSent(d)}
 }
 </script>
 </body>
