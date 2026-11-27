@@ -45,7 +45,7 @@ button{font:inherit;color:inherit}
 .world{position:absolute;left:0;top:0;width:1640px;height:1040px;transform-origin:0 0;will-change:transform}
 .world>*,.p,.hrt,.baby,.blob{position:absolute}
 .lines{left:0;top:0;width:1640px;height:1040px;overflow:visible;pointer-events:none}
-.lines path{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.lines path{fill:none;stroke:#C8A47E;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
 .blob{pointer-events:none;opacity:0}
 .blob svg{display:block;width:100%;height:100%}
 .p{width:150px;height:180px;margin:-90px 0 0 -75px;padding:0;border:0;background:none;cursor:pointer;opacity:0;-webkit-tap-highlight-color:transparent}
@@ -64,7 +64,9 @@ button{font:inherit;color:inherit}
 .baby .bob{--d:2.6s}
 .ask{width:760px;margin-left:-380px;text-align:center;opacity:0;pointer-events:none}
 .ask b{display:block;font:400 48px/1 "Caveat Brush",cursive;font-weight:400;margin-bottom:6px}
-.ask span{font:400 84px/1.05 "Caveat Brush",cursive;background:linear-gradient(transparent 56%,var(--yel) 56%,var(--yel) 92%,transparent 92%);padding:0 10px;white-space:nowrap}
+.ask span{font:400 84px/1.05 "Caveat Brush",cursive;background:linear-gradient(transparent 56%,var(--yel) 56%,var(--yel) 92%,transparent 92%);padding:0 10px;white-space:nowrap;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+/* ecrãs estreitos: a pergunta parte-se em duas linhas para o fim da intro ficar perto da Colete e do Diogo */
+.ask.nar{width:470px;margin-left:-235px}.ask.nar span{white-space:normal}
 .fx{left:0;top:0;width:0;height:0;overflow:visible;pointer-events:none}
 .fx svg{position:absolute;left:0;top:0;overflow:visible}
 @keyframes bob{
@@ -97,7 +99,7 @@ button{font:inherit;color:inherit}
 
 .band{padding-block:clamp(40px,6vw,76px);padding-inline:max(5vw,16px)}
 .col{max-width:620px;margin:0 auto}
-.welcome{border-top:2px solid var(--ink)}
+.welcome{border-top:2px solid #C8A47E}
 .welcome h1{font:400 clamp(40px,7vw,60px)/1 "Caveat Brush",cursive;margin:0 0 18px;text-wrap:balance}
 .hl{background:linear-gradient(transparent 52%,var(--yel) 52%,var(--yel) 90%,transparent 90%);padding:0 4px}
 .welcome p{margin:0 0 12px;font-size:18px}
@@ -168,6 +170,10 @@ input.tr::-moz-range-track{height:8px;border-radius:8px;border:2px solid var(--i
 input.tr::-webkit-slider-thumb{margin-top:-11px}
 .wt.unset input.tr::-webkit-slider-thumb{opacity:.55}
 .wt.unset input.tr::-moz-range-thumb{opacity:.55}
+/* peso por escolher: bolinha esbatida e sem o traço escuro */
+#ww.unset .slw.r input[type=range]::-webkit-slider-thumb{opacity:.55}
+#ww.unset .slw.r input[type=range]::-moz-range-thumb{opacity:.55}
+#ww.unset .ss g{opacity:0}
 .tscale{display:flex;justify-content:space-between;font-size:13px;color:var(--soft);padding:2px 52px 0;font-variant-numeric:tabular-nums}
 .tscale span{display:grid;justify-items:center;gap:2px}
 .tscale svg{width:20px;height:20px}
@@ -248,16 +254,12 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
 .snd:hover{color:var(--ink)}
 .snd:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 .snd svg{width:22px;height:22px;overflow:visible}
-.sndhint{position:absolute;top:10px;right:calc(max(3vw,10px) + 88px);z-index:30;height:44px;display:flex;align-items:center;font:700 18px/1 Caveat,cursive;color:var(--soft);pointer-events:none;animation:hint 1.6s ease-in-out infinite alternate}
-@keyframes hint{from{opacity:.55}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){.sndhint{animation:none}}
 .snd .sw{display:none}.snd[aria-pressed=true] .sw{display:inline}.snd[aria-pressed=true] .sx{display:none}
 </style>
 </head>
 <body>
 
 <button class="snd" id="snd" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 9.4 L7.3 9.6 L11.8 5.6 Q12.3 12 11.9 18.5 L7.2 14.6 L3.8 14.7 Q3.3 12 3.6 9.4Z"/><g class="sw"><path d="M15.4 9.3 Q16.9 12 15.5 14.8"/><path d="M18.2 6.9 Q21.4 12.1 18.3 17.2"/></g><g class="sx"><path d="M16 9.6 L20.6 14.4"/><path d="M20.4 9.5 L16.1 14.5"/></g></svg></button>
-<span class="sndhint" id="sndhint" hidden>toca para ouvir</span>
 <a class="lang" href="en/" hreflang="en" lang="en" aria-label="English">EN</a>
 <header class="stage" id="stage" aria-label="Introdução: a família do bebé">
   <div class="world" id="world">
@@ -299,7 +301,7 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
       <fieldset class="q" id="q-nome">
         <legend><label for="nome">Como te chamas?</label></legend>
         <p class="hint">Assim sabemos de quem é cada palpite.</p>
-        <input type="text" id="nome" name="nome" autocomplete="name" placeholder="Por exemplo, Tia Ana">
+        <input type="text" id="nome" name="nome" autocomplete="name" enterkeyhint="next" placeholder="Por exemplo, Tia Ana">
         <p class="err">Escreve o teu nome.</p>
       </fieldset>
 
@@ -337,8 +339,8 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
 
       <fieldset class="q" id="q-peso">
         <legend><label for="peso">Quanto vai pesar?</label></legend>
-        <p class="wv"><span id="wv">3,300 kg</span></p>
-        <div class="wt">
+        <p class="wv"><span id="wv">-,--- kg</span></p>
+        <div class="wt unset" id="ww">
           <button class="step" type="button" id="minus" aria-label="Menos 10 gramas">−</button>
           <div class="slw" id="pslw"><svg class="ss" aria-hidden="true"></svg><input type="range" id="peso" name="peso" min="2000" max="4800" step="10" value="3300" aria-describedby="wv"></div>
           <button class="step" type="button" id="plus" aria-label="Mais 10 gramas">+</button>
@@ -378,9 +380,9 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
         <legend>Tens ideias de nomes?</legend>
         <p class="hint">Opcional. Até três sugestões.</p>
         <div class="names">
-          <input type="text" id="n1" aria-label="Sugestão de nome 1" placeholder="Sugestão 1">
-          <input type="text" id="n2" aria-label="Sugestão de nome 2" placeholder="Sugestão 2">
-          <input type="text" id="n3" aria-label="Sugestão de nome 3" placeholder="Sugestão 3">
+          <input type="text" id="n1" enterkeyhint="next" aria-label="Sugestão de nome 1" placeholder="Sugestão 1">
+          <input type="text" id="n2" enterkeyhint="next" aria-label="Sugestão de nome 2" placeholder="Sugestão 2">
+          <input type="text" id="n3" enterkeyhint="next" aria-label="Sugestão de nome 3" placeholder="Sugestão 3">
         </div>
       </fieldset>
 
@@ -410,7 +412,7 @@ footer{text-align:center;padding:10px 16px 44px;font:700 28px Caveat,cursive}
     <button class="mclose" type="button" id="mclose" aria-label="Fechar">×</button>
     <div class="dbaby" id="dbaby"></div>
     <h2 id="thanks">Obrigado!</h2>
-    <p>O teu palpite ficou guardado. No domingo descobrimos a primeira resposta.</p>
+    <p>O teu palpite ficou guardado. No domingo, dia 29, iremos descobrir a primeira resposta.</p>
     <dl class="sum" id="sum"></dl>
     <p class="demo hide" id="demo">Modo de teste: esta resposta não foi enviada.</p>
     <div class="mact">
@@ -435,9 +437,8 @@ const CONFIG={formUrl:'https://docs.google.com/forms/d/e/1FAIpQLSdhjqdTRR8avZ3DS
   entries:{nome:'entry.1427517668',sexo:'entry.601037301',data:'entry.987165231',hora:'entry.1257848992',peso:'entry.1663502895',cabelo:'entry.861649370',olhos:'entry.1351059761',chora:'entry.1410777417',nomes:'entry.1762128401',mensagem:'entry.268577654'}};
 
 const $=s=>document.querySelector(s);
-/* ---- sons: família xilofone (ligados por defeito; a pessoa pode desligar) ---- */
-const SND=(()=>{const AC=window.AudioContext||window.webkitAudioContext;let ctx,mst,out,NB,live=[],on=true,q=false,cb=null;
- try{on=localStorage.getItem('palpite-som')!=='0'}catch(e){}
+/* ---- sons: família xilofone (começam desligados: os telemóveis só deixam tocar depois de um toque) ---- */
+const SND=(()=>{const AC=window.AudioContext||window.webkitAudioContext;let ctx,mst,out,NB,live=[],on=false,q=false,cb=null;
  function init(){if(!AC)return;if(!ctx){ctx=new AC();const c=ctx.createDynamicsCompressor();c.threshold.value=-14;c.ratio.value=4;mst=ctx.createGain();mst.gain.value=.5;mst.connect(c).connect(ctx.destination);out=mst;ctx.onstatechange=()=>cb&&cb();
    NB=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);const d=NB.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}
    if(ctx.state==='suspended')ctx.resume().then(()=>cb&&cb(),()=>{})}
@@ -478,9 +479,8 @@ const SND=(()=>{const AC=window.AudioContext||window.webkitAudioContext;let ctx,
  function play(id,o={}){const m=MAP[id];if(!on||q||!ctx||ctx.state!=='running'||!m||document.hidden)return;const g=ctx.createGain();g.gain.value=m[2]||1;g.connect(mst);out=g;
    try{LIB[m[0]](ctx.currentTime+.02,Object.assign({},m[1],o))}finally{out=mst}}
  function stop(){live.forEach(n=>{try{n.stop()}catch(e){}});live=[]}
- function set(v){on=v;try{localStorage.setItem('palpite-som',v?'1':'0')}catch(e){}if(v)init();else stop();cb&&cb()}
+ function set(v){on=v;if(v)init();else stop();cb&&cb()}
  ['pointerdown','keydown','touchend','click'].forEach(ev=>addEventListener(ev,()=>{if(on)init()},{capture:true,passive:true}));
- if(on)try{init()}catch(e){}
  return{play,stop,set,init,get on(){return on},get running(){return !!ctx&&ctx.state==='running'},quiet(v){q=v},onchange(f){cb=f}};
 })();
 const snd=SND.play;
@@ -565,8 +565,9 @@ function tween(to,dur,ek,par){
     if(t<1)requestAnimationFrame(f);else{busy=false;res()}};requestAnimationFrame(f)});
 }
 const SL={x:90,y:0,w:500,h:530},SR={x:1050,y:0,w:500,h:530},SW={x:80,y:0,w:1480,h:1170},SF={x:450,y:250,w:740,h:920};
-const finalShot=()=>fit(SW).s>=.48?SW:SF;
-const roS=new ResizeObserver(()=>{if(!busy&&shot){cam=fit(shot);apply()}});roS.observe(stage);
+/* ecrã largo: a árvore toda; ecrã estreito: só a Colete, o Diogo, o cupcake e a pergunta, sem afastar a câmara */
+const finalShot=()=>{const wide=fit(SW).s>=.48,a=$('#ask');a.classList.toggle('nar',!wide);if(wide)return SW;return{x:585,y:430,w:470,h:1030+a.offsetHeight+50-430}};
+const roS=new ResizeObserver(()=>{if(!busy&&shot){if(endK===1)shot=finalShot();cam=fit(shot);apply()}});roS.observe(stage);
 
 /* ---- animações ---- */
 function pop(el,d=650){el.animate([{opacity:0,transform:'translateY(30px) scale(.4)'},{opacity:1,transform:'none'}],{duration:RM||late?0:d,easing:'cubic-bezier(.3,1.6,.5,1)',fill:'forwards'})}
@@ -723,7 +724,7 @@ const replayIntro=()=>{document.querySelectorAll('.p,.blob,.hrt,#baby,#ask').for
 $('#replay').addEventListener('click',()=>{replayIntro();snd('replay')});
 $('#cta').addEventListener('click',()=>snd('cta'));
 {const b=$('#snd'),SNDL=['Ligar o som','Desligar o som'];
- const ui=()=>{b.setAttribute('aria-pressed',SND.on);b.setAttribute('aria-label',SNDL[SND.on?1:0]);b.title=SNDL[SND.on?1:0];$('#sndhint').hidden=!(SND.on&&!SND.running)};
+ const ui=()=>{b.setAttribute('aria-pressed',SND.on);b.setAttribute('aria-label',SNDL[SND.on?1:0]);b.title=SNDL[SND.on?1:0]};
  SND.onchange(ui);ui();setTimeout(ui,400);
  /* com o som ligado mas ainda bloqueado pelo navegador, o primeiro toque no botão só desbloqueia */
  b.addEventListener('click',()=>{if(SND.on&&!SND.running){SND.init();return}SND.set(!SND.on);ui();if(SND.on)setTimeout(()=>snd('somon'),60)});}
@@ -758,10 +759,13 @@ cal.addEventListener('click',e=>{
 /* ---- peso ---- */
 const peso=$('#peso'),kg=g=>(g/1000).toFixed(3).replace('.',',')+' kg';
 let wB=Math.floor(peso.value/100);const wTick=p=>{const b=Math.floor(peso.value/100);if(b!==wB){wB=b;if(p)snd('peso',{r:.7+(peso.value-2000)/2800*.8})}};
-const showW=()=>{wTick(false);$('#wv').textContent=kg(+peso.value);window.__slFill&&__slFill()};
-peso.addEventListener('input',()=>{wTick(true);showW()});
-$('#minus').addEventListener('click',()=>{snd('menos');peso.value=+peso.value-10;showW()});
-$('#plus').addEventListener('click',()=>{snd('mais');peso.value=+peso.value+10;showW()});
+/* o peso começa por escolher, como a hora: só conta depois de mexer no slider ou no − / + */
+const W0=$('#wv').textContent;let pesoSet=false;
+const setW=v=>{pesoSet=v;$('#ww').classList.toggle('unset',!v);if(v)$('#q-peso').classList.remove('bad')};
+const showW=()=>{wTick(false);$('#wv').textContent=pesoSet?kg(+peso.value):W0;window.__slFill&&__slFill()};
+peso.addEventListener('input',()=>{wTick(true);setW(true);showW()});
+$('#minus').addEventListener('click',()=>{snd('menos');peso.value=+peso.value-10;setW(true);showW()});
+$('#plus').addEventListener('click',()=>{snd('mais');peso.value=+peso.value+10;setW(true);showW()});
 
 /* ---- hora: céu do dia com a cegonha ---- */
 const hR=$('#horaR'),pad2=n=>String(n).padStart(2,'0');
@@ -795,15 +799,24 @@ const val=n=>(f.querySelector(`input[name=${n}]:checked`)||{}).value||'';
 ['input','change'].forEach(ev=>f.addEventListener(ev,e=>{const q=e.target.closest('.q');if(q)q.classList.remove('bad')}));
 function collect(){
   return{nome:$('#nome').value.trim(),sexo:val('sexo'),data:picked?picked.split('-').reverse().join('/'):'',hora:$('#hora').value,
-    peso:peso.value,cabelo:val('cabelo'),olhos:val('olhos'),chora:val('chora'),
+    peso:pesoSet?peso.value:'',cabelo:val('cabelo'),olhos:val('olhos'),chora:val('chora'),
     nomes:['#n1','#n2','#n3'].map(s=>$(s).value.trim()).filter(Boolean).join(', '),mensagem:$('#msg').value.trim()};
 }
 f.addEventListener('change',e=>{if(e.target.matches('.opt input'))snd('esc')});
+/* a tecla "seguinte"/Enter do teclado do telemóvel não envia o formulário: passa à pergunta seguinte */
+let enterAt=0;
+f.addEventListener('keydown',e=>{if(!(e.key==='Enter'||e.keyCode===13))return;const t=e.target;if(!t.matches('input'))return;
+  enterAt=Date.now();e.preventDefault();
+  const nx={nome:null,n1:'#n2',n2:'#n3',n3:'#msg'}[t.id];
+  if(nx){$(nx).focus()}else{t.blur();if(t.id==='nome')$('#q-sexo').scrollIntoView({behavior:'smooth',block:'center'})}});
+const REQK=['nome','sexo','data','hora','peso','cabelo','olhos','chora'],missing=()=>{const d=collect();return REQK.filter(k=>!d[k])};
+const missMsg=miss=>'Falta responder a '+(miss.length===1?'uma pergunta.':miss.length+' perguntas.');
 f.addEventListener('submit',async e=>{
   e.preventDefault();
-  const d=collect(),req=['nome','sexo','data','hora','cabelo','olhos','chora'],miss=req.filter(k=>!d[k]);
+  if(Date.now()-enterAt<400)return;
+  const d=collect(),req=REQK,miss=missing();
   req.forEach(k=>$('#q-'+k).classList.toggle('bad',miss.includes(k)));
-  if(miss.length){snd('erro');$('#q-'+miss[0]).scrollIntoView({behavior:'smooth',block:'center'});$('#sendmsg').textContent='Falta responder a '+(miss.length===1?'uma pergunta.':miss.length+' perguntas.');return}
+  if(miss.length){snd('erro');$('#q-'+miss[0]).scrollIntoView({behavior:'smooth',block:'center'});$('#sendmsg').textContent=missMsg(miss);return}
   const btn=$('#submit');btn.disabled=true;btn.textContent='A enviar…';$('#sendmsg').textContent='';
   const demo=!CONFIG.formUrl;
   try{
@@ -817,9 +830,8 @@ f.addEventListener('submit',async e=>{
 {const base=$('#pgBase'),line=$('#pgLine'),pen=$('#pgPen'),tag=$('#pgTag'),prog=$('#prog');
  let sd=3;const rn=()=>(sd=sd*16807%2147483647)/2147483647-.5;let d='M6 14',w=0;for(let x=18;x<=322;x+=12){w=w*.5+rn()*2.2;d+=` L${x} ${(14+w).toFixed(1)}`}
  base.setAttribute('d',d);line.setAttribute('d',d);const L=line.getTotalLength();line.style.strokeDasharray=L;
- const REQ=7,count=()=>{const v=n=>(f.querySelector(`input[name=${n}]:checked`)||{}).value;
-   return [$('#nome').value.trim(),v('sexo'),picked,$('#hora').value,v('cabelo'),v('olhos'),v('chora')].filter(Boolean).length};
- const upd=()=>{const n=count(),p=n/REQ;line.style.strokeDashoffset=L*(1-p);const pt=line.getPointAtLength(Math.max(.1,L*p));pen.setAttribute('transform',`translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);tag.textContent=n>=REQ?'Pronto!':`${n} de ${REQ}`};
+ const REQ=REQK.length,count=()=>REQ-missing().length;
+ const upd=()=>{const n=count(),p=n/REQ;{const m=$('#sendmsg');if(m.textContent&&!f.classList.contains('hide')){const mi=missing();m.textContent=mi.length?missMsg(mi):''}}line.style.strokeDashoffset=L*(1-p);const pt=line.getPointAtLength(Math.max(.1,L*p));pen.setAttribute('transform',`translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);tag.textContent=n>=REQ?'Pronto!':`${n} de ${REQ}`};
  const vis=()=>{if(f.classList.contains('hide')){prog.classList.add('off');return}
    const s=$('#submit').getBoundingClientRect(),H=innerHeight;
    prog.classList.toggle('stuck',prog.getBoundingClientRect().top<=1);prog.classList.toggle('off',s.top<H-40)};
@@ -855,16 +867,16 @@ $('#seeMine').addEventListener('click',()=>{const d=mine();if(d){fillDone(d,fals
 $('#backTop').addEventListener('click',()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>$('#replay').click(),500)});
 
 function resetForm(){f.reset();picked='';cal.querySelectorAll('.day').forEach(x=>x.setAttribute('aria-pressed','false'));$('#picked').textContent='';
-  resetH();hB=Math.floor(hR.value/60);showW();f.querySelectorAll('.q.bad').forEach(q=>q.classList.remove('bad'));$('#sendmsg').textContent='';
+  resetH();hB=Math.floor(hR.value/60);setW(false);showW();f.querySelectorAll('.q.bad').forEach(q=>q.classList.remove('bad'));$('#sendmsg').textContent='';
   $('#sent').classList.add('hide');f.classList.remove('hide');window.__progUpd&&__progUpd();$('#nome').focus({preventScroll:true});f.scrollIntoView({behavior:'smooth',block:'start'})}
 $('#another').addEventListener('click',resetForm);
 window.__formState=()=>({nome:$('#nome').value,sexo:val('sexo'),cabelo:val('cabelo'),olhos:val('olhos'),chora:val('chora'),data:picked,
-  hora:$('#hora').value?hR.value:'',peso:peso.value,n:['#n1','#n2','#n3'].map(s=>$(s).value),msg:$('#msg').value});
+  hora:$('#hora').value?hR.value:'',peso:pesoSet?peso.value:'',n:['#n1','#n2','#n3'].map(s=>$(s).value),msg:$('#msg').value});
 if(carry){SND.quiet(true);try{const s=carry.form;
   if(s){$('#nome').value=s.nome||'';['sexo','cabelo','olhos','chora'].forEach(n=>{const i=s[n]&&f.querySelector(`input[name=${n}][value="${s[n]}"]`);if(i)i.checked=true});
    if(s.data){const b=cal.querySelector(`.day[data-d="${s.data}"]`);if(b)b.click()}
    if(s.hora!==''&&s.hora!=null){hR.value=s.hora;hB=Math.floor(hR.value/60);showH()}
-   peso.value=s.peso;showW();(s.n||[]).forEach((v,i)=>{$('#n'+(i+1)).value=v||''});$('#msg').value=s.msg||'';window.__progUpd&&__progUpd()}
+   if(s.peso){peso.value=s.peso;setW(true)}showW();(s.n||[]).forEach((v,i)=>{$('#n'+(i+1)).value=v||''});$('#msg').value=s.msg||'';window.__progUpd&&__progUpd()}
   requestAnimationFrame(()=>scrollTo({top:carry.y,behavior:'instant'}))}finally{SND.quiet(false)}}
 
 /* ---- traço à mão nos controlos ---- */
